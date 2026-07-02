@@ -1,14 +1,17 @@
 name: Release
-# Publish to npm on every version tag: `git tag v0.1.0 && git push --tags`.
-# Requires the NPM_TOKEN repo secret (a granular automation token — it
-# bypasses OTP for CI). --provenance attaches a supply-chain attestation
-# linking the published tarball to this exact commit + workflow.
+# Tokenless npm publish via TRUSTED PUBLISHING (OIDC): npmjs.com trusts this
+# exact repo + workflow file to publish, no NPM_TOKEN anywhere. Configure once
+# on npmjs.com → package → Settings → Trusted Publisher → GitHub Actions:
+#   Organization: pajama-studio · Repository: prefab-kit
+#   Workflow filename: release.yml · Allowed actions: npm publish
+# Then releasing is just: bump version → git tag vX.Y.Z → git push --tags.
+# Provenance attestation is automatic with trusted publishing.
 on:
   push:
     tags: ["v*"]
 permissions:
   contents: read
-  id-token: write # for npm --provenance
+  id-token: write # OIDC token for npm trusted publishing
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -16,11 +19,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
-          cache: npm
-          registry-url: https://registry.npmjs.org
+          node-version: 24
+          registry-url: "https://registry.npmjs.org"
+          # never use caching in release builds (npm docs recommendation)
+      - run: npm install -g npm@latest # trusted publishing needs npm >= 11.5.1
       - run: npm ci
       - run: npm test
-      - run: npm publish --access public --provenance
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: npm publish --access public
