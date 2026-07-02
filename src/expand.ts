@@ -63,10 +63,11 @@ export function expandPrefabInstance<C extends CoreComponents<C>, E extends KitE
     const ov = overrides[pe.id];
     if (ov?.removed) continue;
     const gid = instanceEntityId(instance.id, pe.id, prefab.rootId);
-    let components: C = { ...pe.components, ...(ov?.components ?? {}) };
+    let components: C = { ...pe.components };
 
     // Exposed params write into their bound component field (instance value,
-    // else the param's default).
+    // else the param's default). Applied BEFORE per-part overrides so an
+    // explicit instance override always wins over a param.
     for (const param of prefab.params ?? []) {
       if (param.target.localId !== pe.id) continue;
       const v = inst.params?.[param.key] ?? param.default;
@@ -76,6 +77,9 @@ export function expandPrefabInstance<C extends CoreComponents<C>, E extends KitE
         components = { ...components, [param.target.component]: { ...(comp as object), [param.target.field]: v } };
       }
     }
+
+    // Per-instance overrides — the strongest customisation layer.
+    if (ov?.components) components = { ...components, ...ov.components };
 
     // Host-owned cross-entity references (e.g. a knob's `controls` target).
     if (opts.remapComponentRefs) {

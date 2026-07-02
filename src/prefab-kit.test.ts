@@ -143,3 +143,55 @@ describe("prefab-kit / stores", () => {
     expect((await store.list()).map((p) => p.id)).toEqual(["desk"]);
   });
 });
+
+describe("prefab-kit / authoring ops (toy domain)", () => {
+  it("buildPrefabFromSelection: plain entity wins root; instance member stays linked", async () => {
+    const { buildPrefabFromSelection } = await import("./ops");
+    const table = E("table", { transform: T(0, 0, 0) });
+    const lampInst = inst("li", "lamp", 1);
+    const byId = { table, li: lampInst };
+    const r = buildPrefabFromSelection([lampInst, table], byId, { prefabId: "combo", instanceId: "c1", name: "Combo" })!;
+    expect(r.prefab.rootId).toBe("table");                                    // plain entity preferred
+    expect(r.prefab.entities.find((e) => e.id === "li")!.components.prefabInstance?.prefabId).toBe("lamp"); // nested link kept
+    expect(r.instance.components.prefabInstance!.prefabId).toBe("combo");
+    expect(r.instance.components.transform!.position.x).toBe(0);
+  });
+
+  it("bakeInstanceIntoTemplate absorbs overrides + extra parts, bumps version", async () => {
+    const { bakeInstanceIntoTemplate } = await import("./ops");
+    const i = inst("i1", "lamp", 4, { overrides: { bulb: { components: { lamp: { on: true, watts: 60 } } } } });
+    const extra = E("i1::shade", { transform: T(4.2, 1.4, 0), attach: at("i1", 0.2, 1.4, 0) });
+    const next = bakeInstanceIntoTemplate(i, LAMP, [extra]);
+    expect(next.version).toBe(2);
+    expect(next.entities.find((e) => e.id === "bulb")!.components.lamp!.on).toBe(true);      // override baked
+    const shade = next.entities.find((e) => e.id === "shade")!;
+    expect(shade.components.attach!.parentId).toBe("base");                                   // remapped to local root
+    const root = next.entities.find((e) => e.id === "base")!;
+    expect(root.components.transform!.position.x).toBe(0);                                    // root reset to origin
+    expect(root.components.prefabInstance).toBeUndefined();
+  });
+
+  it("clearOverrides / clearOverride", async () => {
+    const { clearOverrides, clearOverride } = await import("./ops");
+    const i = inst("i1", "lamp", 0, { overrides: { bulb: { removed: true }, base: { components: {} } } });
+    expect(Object.keys(clearOverride(i, "bulb").components.prefabInstance!.overrides!)).toEqual(["base"]);
+    expect(clearOverrides(i).components.prefabInstance!.overrides).toEqual({});
+  });
+
+  it("upsertPrefabs replaces same-id templates with a raised version", async () => {
+    const { upsertPrefabs } = await import("./ops");
+    const local = [{ ...LAMP, version: 5 }];
+    const next = upsertPrefabs(local, [{ ...LAMP, name: "Lamp v2", version: 1 }, DESK]);
+    expect(next.find((p) => p.id === "lamp")!.name).toBe("Lamp v2");
+    expect(next.find((p) => p.id === "lamp")!.version).toBe(6); // raised past local
+    expect(next.map((p) => p.id)).toEqual(["lamp", "desk"]);
+  });
+
+  it("createInstanceEntity places a linked instance at a position", async () => {
+    const { createInstanceEntity } = await import("./ops");
+    const e = createInstanceEntity(LAMP, "i9", { x: 7, y: 0, z: 1 });
+    expect(e.id).toBe("i9");
+    expect(e.components.prefabInstance!.prefabId).toBe("lamp");
+    expect(e.components.transform!.position.x).toBe(7);
+  });
+});

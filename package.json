@@ -1,7 +1,7 @@
 {
   "name": "@pajama-studio/prefab-kit",
-  "version": "0.2.0",
-  "description": "Standalone, serializable linked-prefab (Blueprint) framework: templates, instances, per-instance overrides, exposed params, callable actions, recursive nesting — zero dependencies, domain-agnostic, plain JSON.",
+  "version": "0.3.0",
+  "description": "Standalone, serializable linked-prefab (Blueprint) framework: templates, instances, per-instance overrides, exposed params, callable actions, recursive nesting \u2014 zero dependencies, domain-agnostic, plain JSON.",
   "keywords": [
     "prefab",
     "blueprint",
