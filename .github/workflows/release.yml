@@ -1,0 +1,26 @@
+name: Release
+# Publish to npm on every version tag: `git tag v0.1.0 && git push --tags`.
+# Requires the NPM_TOKEN repo secret (a granular automation token — it
+# bypasses OTP for CI). --provenance attaches a supply-chain attestation
+# linking the published tarball to this exact commit + workflow.
+on:
+  push:
+    tags: ["v*"]
+permissions:
+  contents: read
+  id-token: write # for npm --provenance
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: https://registry.npmjs.org
+      - run: npm ci
+      - run: npm test
+      - run: npm publish --access public --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
