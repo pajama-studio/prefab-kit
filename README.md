@@ -84,3 +84,11 @@ store.ts      PrefabStore interface + Memory / WebStorage reference backends
 `PACKAGE_VERSION` gates the file format. Bump it when the shape changes and
 keep `parsePrefabPackage` reading older versions; readers reject files from
 the future loudly instead of mis-parsing them.
+
+## Agent skill
+
+The package ships a Claude/agent skill teaching the format:
+
+```bash
+cp -r node_modules/@pajama-studio/prefab-kit/skill .claude/skills/prefab-kit
+```

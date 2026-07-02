@@ -1,6 +1,6 @@
 {
   "name": "@pajama-studio/prefab-kit",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Standalone, serializable linked-prefab (Blueprint) framework: templates, instances, per-instance overrides, exposed params, callable actions, recursive nesting — zero dependencies, domain-agnostic, plain JSON.",
   "keywords": [
     "prefab",
@@ -31,7 +31,8 @@
   "files": [
     "dist",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "skill"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
