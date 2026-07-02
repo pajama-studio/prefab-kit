@@ -1,9 +1,9 @@
 import { describe, it, expect } from "vitest";
-import type { AttachComp, CoreComponents, KitEntity, KitPrefab, PrefabInstanceComp, Transform } from "./types";
-import { composeTransform, resolveWorldTransform, worldToLocal } from "./transform";
-import { expandEntities } from "./expand";
-import { collectPrefabDeps, packPrefab, parsePrefabPackage, validatePrefab } from "./serialize";
-import { MemoryPrefabStore, WebStoragePrefabStore } from "./store";
+import type { AttachComp, CoreComponents, KitEntity, KitPrefab, PrefabInstanceComp, Transform } from "./types.js";
+import { composeTransform, resolveWorldTransform, worldToLocal } from "./transform.js";
+import { expandEntities } from "./expand.js";
+import { collectPrefabDeps, packPrefab, parsePrefabPackage, validatePrefab } from "./serialize.js";
+import { MemoryPrefabStore, WebStoragePrefabStore } from "./store.js";
 
 /**
  * A TOY host domain — a lamp game, nothing kitchen — proving the kit is

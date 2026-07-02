@@ -1,5 +1,5 @@
-import type { CoreComponents, KitPrefab } from "./types";
-import { validatePrefab } from "./serialize";
+import type { CoreComponents, KitPrefab } from "./types.js";
+import { validatePrefab } from "./serialize.js";
 
 /**
  * Pluggable prefab persistence. The kit ships two reference backends

@@ -1,5 +1,5 @@
-import type { CoreComponents, KitEntity, KitPrefab, Transform } from "./types";
-import { IDENTITY, worldToLocal } from "./transform";
+import type { CoreComponents, KitEntity, KitPrefab, Transform } from "./types.js";
+import { IDENTITY, worldToLocal } from "./transform.js";
 
 /**
  * Linked prefab (Blueprint) expansion — the heart of the kit.

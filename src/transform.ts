@@ -1,4 +1,4 @@
-import type { Transform } from "./types";
+import type { Transform } from "./types.js";
 
 /** The minimal component shape the transform algebra reads. */
 export type AttachableComponents = { transform?: Transform; attach?: { parentId: string; socket?: string; offset: Transform } };

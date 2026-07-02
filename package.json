@@ -1,17 +1,38 @@
 {
   "name": "@pajama-studio/prefab-kit",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Standalone, serializable linked-prefab (Blueprint) framework: templates, instances, per-instance overrides, exposed params, callable actions, recursive nesting — zero dependencies, domain-agnostic, plain JSON.",
-  "keywords": ["prefab", "blueprint", "game", "three", "react-three-fiber", "ecs", "scene-graph", "serialization"],
+  "keywords": [
+    "prefab",
+    "blueprint",
+    "game",
+    "three",
+    "react-three-fiber",
+    "ecs",
+    "scene-graph",
+    "serialization"
+  ],
   "homepage": "https://github.com/pajama-studio/prefab-kit#readme",
-  "repository": { "type": "git", "url": "git+https://github.com/pajama-studio/prefab-kit.git" },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pajama-studio/prefab-kit.git"
+  },
   "license": "MIT",
   "author": "Pajama Studio (https://pajama.studio)",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" } },
-  "files": ["dist", "README.md", "LICENSE"],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "test": "vitest run",

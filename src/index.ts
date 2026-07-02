@@ -1,6 +1,6 @@
 /** prefab-kit public API — see README.md for the adoption guide. */
-export * from "./types";
-export * from "./transform";
-export * from "./expand";
-export * from "./serialize";
-export * from "./store";
+export * from "./types.js";
+export * from "./transform.js";
+export * from "./expand.js";
+export * from "./serialize.js";
+export * from "./store.js";

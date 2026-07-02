@@ -1,4 +1,4 @@
-import type { CoreComponents, KitEntity, KitPrefab } from "./types";
+import type { CoreComponents, KitEntity, KitPrefab } from "./types.js";
 
 /**
  * Serialization: prefabs are plain JSON already — this module adds the
