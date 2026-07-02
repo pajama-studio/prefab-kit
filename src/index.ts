@@ -4,5 +4,5 @@ export * from "./transform.js";
 export * from "./expand.js";
 export * from "./serialize.js";
 export * from "./ops.js";
-export * from "./introspect";
+export * from "./introspect.js";
 export * from "./store.js";
